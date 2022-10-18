@@ -1,3 +1,0 @@
-Teste
-OlaLeandro
-x=50
