@@ -1,0 +1,46 @@
+Teste
+OlaLeandro
+x=50
+x é maior que 10
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+0é par
+1é ímpar
+2é par
+3é ímpar
+4é par
+5é ímpar
+6é par
+7é ímpar
+8é par
+9é ímpar
+10é par

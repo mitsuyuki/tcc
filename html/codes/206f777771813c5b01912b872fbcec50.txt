@@ -1,0 +1,31 @@
+Teste
+Ola Leandro
+x=55
+x é maior que 50
+0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+22
+24
+26
+28
+30
+0 é par
+1 é ímpar
+2 é par
+3 é ímpar
+4 é par
+5 é ímpar
+6 é par
+7 é ímpar
+8 é par
+9 é ímpar
+10 é par

@@ -1,0 +1,26 @@
+Teste
+Ola Leandro
+x=5
+x é menor que 10
+0
+3
+6
+9
+12
+15
+18
+21
+24
+27
+30
+0 é par
+1 é ímpar
+2 é par
+3 é ímpar
+4 é par
+5 é ímpar
+6 é par
+7 é ímpar
+8 é par
+9 é ímpar
+10 é par

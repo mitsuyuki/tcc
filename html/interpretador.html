@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Interpretador</title>
+		<!-- CodeMirror-->
+		<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+		<script type="text/javascript" src="codemirror/lib/codemirror.js"></script>
+		<script type="text/javascript" src="codemirror/mode/clike/clike.js"></script>
+		<script type="text/javascript" src="codemirror/mode/python/python.js"></script>
+		<script type="text/javascript" src="codemirror/addon/runmode/runmode.js"></script>
+		<link rel="stylesheet" href="codemirror/theme/3024-night.css">
+		<link rel="stylesheet" href="codemirror/theme/base16-light.css">
+		<link rel="stylesheet" href="codemirror/theme/blackboard.css">
+		<link rel="stylesheet" href="codemirror/theme/dracula.css">
+		<link rel="stylesheet" href="codemirror/theme/eclipse.css">
+		<link rel="stylesheet" href="codemirror/theme/idea.css">
+		<link rel="stylesheet" href="codemirror/theme/mdn-like.css">
+		<link rel="stylesheet" href="codemirror/theme/monokai.css">
+		<link rel="stylesheet" href="codemirror/theme/neat.css">
+		<link rel="stylesheet" href="codemirror/theme/rubyblue.css">
+		<link rel="stylesheet" href="codemirror/theme/xq-light.css">
+		<link rel="stylesheet" href="codemirror/theme/yonce.css">
+		<!-- Bootstrap-->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+		<style>
+			body {
+				font-size: 20px;
+				background-color: #e7e7e7;
+			}
+			#select {
+				width: 100%;
+			}
+			i:hover {
+				cursor: pointer;
+			}
+			.CodeMirror {
+				height: 600px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div class="container" style="margin-top: 50px;">
+			<div class="row">
+				<div class="col-12">
+					<form method="post" enctype="multipart/form-data" id="formCodigo">
+					<div class="row justify-content-between">
+						<div class="col-md-6 col-sm-12">
+							<span>Selecione a linguagem e entre com o código no editor abaixo:</span>
+						</div>
+						<div class="col-md-3 col-sm-12">
+							<select name="linguagem" id="linguagem">
+								<option value="-1" selected>Escolha a linguagem:</option>
+								<option value="p">Português Estruturado</option>
+								<option value="c">C</option>
+								<option value="cpp">C++</option>
+								<option value="python2">Python2</option>
+								<option value="python3">Python3</option>
+								<option value="java">Java</option>
+							</select>
+						</div>
+						<div class="col-md-3 col-sm-12">
+							<select onchange="selectTheme()" id="select">
+								<option selected>Escolha o tema:</option>
+								<option>3024-night</option>
+								<option>base16-light</option>
+								<option>blackboard</option>
+								<option>dracula</option>
+								<option>eclipse</option>
+								<option>idea</option>
+								<option>mdn-like</option>
+								<option>monokai</option>
+								<option>neat</option>
+								<option>rubyblue</option>
+								<option>xq-light</option>
+								<option>yonce</option>
+							</select>
+						</div>
+					</div><br />
+						<div id="aviso_java_main" style="border: 1px solid;padding: 15px;display:none;">ATENÇÃO! Antes de subir o código, verifique se a classe se chama "main", caso contrário, retornará um erro.</div>
+						<div id="aviso_portugol" style="border: 1px solid;padding: 15px;display:none;">
+						Clique no botão para consultar as instruções de Português Estruturado:<br /><button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#portugol">Ver instruções</button>
+						<div class="modal" id="portugol" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">INSTRUÇÕES PORTUGUÊS ESTRUTURADO:</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p><strong>Declaração de variáveis:</strong><br />var n1: inteiro<br />var n2: real<br />var nome: caractere<br /><br /><strong>Entrada de dados:</strong><br />leia (variavel)<br /><br /><strong>Saída de dados:</strong><br />escreva ("texto")<br /><br /><strong>Estrutura de decisão:</strong><br />se (x > 3) entao<br />y = x + 4<br />senao<br />y = x - 4<br /><br /><strong>Estruturas de repetição:</strong><br />para i de 0 ate 19 passo 2 faca<br />escreva(i)<br />fimpara<br /><br />enquanto (i <= 20) faca <br />escreva (i)<br />i = i + 1<br /><br /><strong>Exemplo de um algoritmo:</strong><br />var nome: caracter<br />var x: inteiro<br />var i: inteiro<br />var res: inteiro<br /><br />nome = "Leandro"<br />x = 60 - 10<br /><br />escreva ("Teste")<br />escreva ("Ola " + nome)<br />escreva ("x" + "=" + x)<br /><br />se (x > 50) entao<br />    escreva ("x é maior que 50")<br />senao<br />    se (x < 10) entao<br />        escreva ("x é menor que 10")<br />    senao<br />        escreva ("x é maior que 10")<br />    fimse<br />fimse<br /><br />para i de 0 ate 30 passo 2 faca<br />    escreva (i)<br />fimpara<br />i = 0<br />enquanto (i<=10) faca<br />    se (i % 2 == 0) entao<br />        escreva (i + " é par")<br />    senao<br />        escreva (i + " é ímpar")<br />    fimse<br />    i = i + 1<br />fimenquanto</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+							</div>
+							</div>
+						</div>
+						</div>
+						</div>
+						<br />
+						<div class="row justify-content-end">
+							<div class="col-1">
+								<i class="bi bi-arrow-90deg-left" title="Desfazer" onclick="editor_desfazer()"></i>
+							</div>
+							<div class="col-1">
+								<i class="bi bi-arrow-90deg-right" title="Refazer" onclick="editor_refazer()"></i>
+							</div>
+							<div class="col-1">
+								<i class="bi bi-scissors" title="Recortar tudo" onclick="editor_recortar()"></i>
+							</div>
+							<div class="col-1">
+								<i class="bi bi-clipboard" title="Copiar tudo" onclick="editor_copiar()"></i>
+							</div>
+							<div class="col-1">
+								<i class="bi bi-clipboard-check" title="Colar ao final" onclick="editor_colar()"></i>
+							</div>
+							<div class="col-1">
+								<i class="bi bi-x-square" title="Apagar tudo" onclick="editor_apagar()"></i>
+							</div>
+							<div class="col-1">
+								<i class="bi bi-download" title="Salvar arquivo" onclick="salvaArquivo()"></i>
+							</div>
+						</div>
+						
+						<textarea id="editor"></textarea><br />
+						<span>Ou envie seu arquivo aqui:</span>
+						<input type="file" name="arquivo" id="arquivo" onchange="carregaConteudoArquivo()"/><br /><br />
+						
+						<!--Se desejar, carregue aqui um arquivo que será usado como entrada de dados:<br />
+						<input type="file" name="entrada" id="entrada" /><br /><br />-->
+						<div class="row mt-5 mb-5">
+							<div class="d-flex justify-content-center">
+								<input type="button" name="enviaForm" id="enviaForm" class="btn btn-success" value="Enviar código"/>
+							</div>
+						</div>
+					</form>
+				</div>
+				<hr class="my-4">
+				<div class="row mt-1 mb-5">
+					<div class="col-12">
+						<div class="row">
+							<div class="col-6">
+								<span>Entrada esperada:</span><br /><br />
+								<div id="entrada_esperada" style="white-space: pre;max-height:150px;overflow-y:auto;"></div>
+								<br /><br /><br />
+							</div>
+							<div class="col-6">
+								<span>Saída esperada:</span><br /><br />
+								<div id="saida_esperada" style="white-space: pre;max-height:150px;overflow-y:auto;"></div>
+								<br /><br /><br />
+							</div>
+						</div>
+						<span>Comparação do programa enviado com a saída esperada (diff):</span><br /><br />
+						<div id="saida" style="white-space: pre;">
+	<span style="color:purple;">Envie o código para obter a comparação</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Ajax-->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script>
+			$(document).ready(function(){
+				$("#linguagem").change(function() {
+					var linguagem = $("#linguagem").val();
+					var aviso_java = $("#aviso_java_main");
+					var aviso_portugol = $("#aviso_portugol");
+					var code_java = "class main {\n\tpublic static void main(String args[]){\n\t\tSystem.out.println(\"Ola mundo!\");\n\t}\n}";
+					var code_c = "#include<stdio.h>\n\nint main() {\n\tprintf(\"Ola mundo!\");\n\treturn 0;\n}";
+					var code_cpp = "#include<iostream>\n\nusing namespace std;\n\nint main() {\n\tcout << \"Ola mundo!\" << endl;\n\treturn 0;\n}";
+					var code_p = "escreva (\"Ola mundo!\")";
+					var code_py2 = "print 'Ola mundo!'";
+					var code_py3 = "print(\"Ola mundo!\")";
+					var texto_atual = getCode();
+					if(linguagem == "java") {
+						aviso_java.show();
+						aviso_portugol.hide();
+					} else if(linguagem == "p") {
+						aviso_java.hide();
+						aviso_portugol.show();
+					} else {
+						aviso_java.hide();
+						aviso_portugol.hide();
+					}
+					if(texto_atual == code_java || texto_atual == code_c || texto_atual == code_cpp || texto_atual == code_p || texto_atual == code_py2 || texto_atual == code_py3 || texto_atual == "") {
+						if(linguagem == "java") {
+							setCode(code_java);
+						} else if(linguagem == "c") {
+							setCode(code_c);
+						} else if(linguagem == "cpp") {
+							setCode(code_cpp);
+						} else if(linguagem == "p") {
+							setCode(code_p);
+						} else if(linguagem == "python2") {
+							setCode(code_py2);
+						} else if(linguagem == "python3") {
+							setCode(code_py3);
+						}
+					}
+				});
+				$("#enviaForm").click(function() {
+					var linguagem = $("#linguagem").val();
+					var arquivos = $('#arquivo').get(0).files.length;
+					var texto_codigo = getCode();
+					if(linguagem == "-1") {
+						alert("Você deve escolher a linguagem antes de enviar o código!");
+					} else if(arquivos === 0 && texto_codigo == "") {
+						alert("Você deve escrever um código no editor ou carregar um arquivo!");
+					} else {
+						var formData = new FormData(document.getElementById("formCodigo"));
+						formData.append('codigo',texto_codigo);
+						$.ajax({
+							url: 'recebe.php',
+							type: 'POST',
+							data: formData,
+							cache : false,
+							contentType: false,
+							processData: false,
+							success: function(data) {$('#saida').html(data);},
+							error: function(data) {$('#saida').html('Erro na conexão com o servidor. Por favor, tente novamente.');}
+						});
+					}
+					setTimeout(function (){ location.href = "#saida" }, 500);
+				});
+
+				$.ajax({
+					url: 'pega_saida.php',
+					type: 'POST',
+					cache : false,
+					contentType: false,
+					processData: false,
+					success: function(data) {$('#saida_esperada').html(data);},
+					error: function(data) {$('#saida_esperada').html('Erro na conexão com o servidor. Por favor, tente novamente.');}
+				});
+				$.ajax({
+					url: 'pega_entrada.php',
+					type: 'POST',
+					cache : false,
+					contentType: false,
+					processData: false,
+					success: function(data) {$('#entrada_esperada').html(data);},
+					error: function(data) {$('#entrada_esperada').html('Erro na conexão com o servidor. Por favor, tente novamente.');}
+				});
+			});
+		</script>
+		<!-- CodeMirror-->
+		<script>
+			/*CodeMirror(document.querySelector('#editor'), {
+				lineNumbers: true,
+			  	 tabSize: 2,
+				 mode: 'javascript',
+				 theme: 'monokai'
+			});*/
+			var editorCodemirror = CodeMirror.fromTextArea( document.getElementById("editor"), {
+				lineNumbers: true,
+				tabSize: 2,
+				mode: 'text/x-csrc',
+				theme: 'eclipse'
+			});
+			function getCode() {
+				return editorCodemirror.getValue();
+			}
+			function setCode(code) {
+				editorCodemirror.setValue(code);
+			}
+			function editor_desfazer() {
+				editorCodemirror.execCommand("undo");
+			}
+			function editor_refazer() {
+				editorCodemirror.execCommand("redo");
+			}
+			function editor_copiar() {
+				/*var texto_copia = getCode();
+				*var input = document.createElement('textarea');
+				*input.innerHTML = texto_copia;
+				*document.body.appendChild(input);
+				*input.select();
+				*var result = document.execCommand('copy');
+				*document.body.removeChild(input);
+				*return result;
+				*/
+				var texto_copiar = getCode();
+				if (!navigator.clipboard) {
+					fallbackCopyTextToClipboard(texto_copiar);
+					return;
+				}
+				navigator.clipboard.writeText(texto_copiar).then(function() {
+					console.log('Async: Copying to clipboard was successful!');
+				}, function(err) {
+					console.error('Async: Could not copy text: ', err);
+				});
+			}
+			function editor_colar() {
+				navigator.clipboard.readText().then(texto_colar => setCode(getCode() + texto_colar));
+			}
+			function editor_recortar() {
+				editor_copiar();
+				setCode("");
+			}
+			function editor_apagar() {
+				setCode("");
+			}
+			function fallbackCopyTextToClipboard(text) {
+			  var textArea = document.createElement("textarea");
+			  textArea.value = text;
+			  
+			  // Avoid scrolling to bottom
+			  textArea.style.top = "0";
+			  textArea.style.left = "0";
+			  textArea.style.position = "fixed";
+
+			  document.body.appendChild(textArea);
+			  textArea.focus();
+			  textArea.select();
+
+			  try {
+				var successful = document.execCommand('copy');
+				var msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Fallback: Copying text command was ' + msg);
+			  } catch (err) {
+				console.error('Fallback: Oops, unable to copy', err);
+			  }
+
+			  document.body.removeChild(textArea);
+			}
+			function carregaConteudoArquivo(){
+				var fileToLoad = document.getElementById("arquivo").files[0];
+
+				var fileReader = new FileReader();
+				fileReader.onload = function(fileLoadedEvent){
+					var textodoarquivo = fileLoadedEvent.target.result;
+					setCode(textodoarquivo);
+				};
+
+				fileReader.readAsText(fileToLoad, "UTF-8");
+			}
+			
+			function salvaArquivo() {
+				var linguagem = $("#linguagem").val();
+				if(linguagem == "python2" || linguagem == "python3") {
+					linguagem = "py";
+				}
+				var codigo = getCode();
+				$.ajax({
+					url: 'salva_arquivo.php',
+					type: 'POST',
+					//data: {codigo_editor: codigo, linguagem_editor: linguagem},
+					data: { 
+						codigo_editor: codigo,
+						linguagem_editor: linguagem
+					},
+					success: function(ret) {window.open(ret, '_blank');},
+					error: function(data) {alert("Erro ao salvar arquivo.")}
+				});
+			}
+			function changeMode() {
+				var newMode = document.getElementById("linguagem").value;
+				var modes = [];
+				modes['c'] = 'text/x-csrc';
+				modes['cpp'] = 'text/x-c++src';
+				modes['python2'] = 'text/x-python';
+				modes['python3'] = 'text/x-python';
+				modes['java'] = 'text/x-java';
+				modes['p'] = 'text/x-csrc';
+				editorCodemirror.setOption("mode",modes[newMode]);
+			}
+			function selectTheme() {
+				var input = document.getElementById("select");
+				var theme = input.options[input.selectedIndex].textContent;
+				if(theme == "Escolha o tema:") {
+					theme = 'eclipse';
+				}
+				editorCodemirror.setOption("theme", theme);
+			}
+			document.getElementById("linguagem").addEventListener("change", changeMode, false);
+		</script>
+		<!-- Bootstrap-->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+	</body>
+</html>

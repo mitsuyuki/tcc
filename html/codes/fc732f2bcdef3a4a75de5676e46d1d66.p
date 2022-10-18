@@ -1,0 +1,1 @@
+escrev ("Ola mundo!")
